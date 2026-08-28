@@ -6,18 +6,8 @@ class Home extends BaseController
 {
     public function index(): string
     {
-        return view('welcome_message');
+        // Aquí cargas la vista principal. 
+        // Cambié 'welcome_message' por 'facturacion/index' según lo que intentabas pegar.
+        return view('facturacion/index');
     }
-
-    public function saludo($nombre,$apellido){
-        echo "Hola " . $nombre . " " . $apellido;
-    }
-    public function sumita($numero1, $numero2)
-{
-  
-    $resultado = $numero1 + $numero2;
-    
-    echo "El resultado es: " . $resultado;
-}
-
 }

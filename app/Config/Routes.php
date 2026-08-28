@@ -9,4 +9,4 @@ $routes->get('/saludo/(:any)/(:any)', 'Home::saludo/$1/$2', ['as' => 'saludo']);
 
 $routes->get('suma/(:num)/(:num)', 'Home::sumita/$1/$2'); 
 
-$routes->get('/prueba', 'Prueba::index');
+$routes->get('/facturacion', 'Home::index');
