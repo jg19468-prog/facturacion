@@ -8,7 +8,7 @@
                 </a>
             </li>
             <li class="nav-item d-none d-md-block">
-                <a href="<?= base_url() ?>" class="nav-link">Inicio</a>
+                <a href="<?= base_url('facturacion') ?>" class="nav-link">Inicio</a>
             </li>
         </ul>
 
@@ -17,11 +17,15 @@
             <li class="nav-item dropdown user-menu">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                     <i class="bi bi-person-circle"></i>
-                    <span class="d-none d-md-inline ms-1">Usuario</span>
+                    <!-- Muestra el nombre real almacenado en la sesión -->
+                    <span class="d-none d-md-inline ms-1"><?= session()->get('name') ?? 'Usuario' ?></span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
                     <li class="user-footer text-center">
-                        <a href="#" class="btn btn-default btn-flat">Cerrar Sesión</a>
+                        <!-- Enlace dinámico para cerrar sesión -->
+                        <a href="<?= base_url('logout') ?>" class="btn btn-default btn-flat text-danger">
+                            <i class="bi bi-box-arrow-right me-2"></i> Cerrar Sesión
+                        </a>
                     </li>
                 </ul>
             </li>
