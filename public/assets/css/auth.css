@@ -1,0 +1,85 @@
+/* ==========================================================
+   Estilos para la pantalla de Login
+   Sistema de Facturación
+   ========================================================== */
+
+.auth-wrapper {
+    min-height: 100vh;
+}
+
+/* Panel izquierdo: imagen de fondo (degradado + patrón decorativo) */
+.auth-brand-panel {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #0d6efd 0%, #6610f2 100%);
+    color: #ffffff;
+    padding: 3rem;
+}
+
+.auth-brand-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    opacity: 0.15;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Ccircle cx='3' cy='3' r='3' fill='%23ffffff'/%3E%3C/svg%3E");
+    background-size: 30px 30px;
+    pointer-events: none;
+}
+
+.auth-brand-panel .brand-content {
+    position: relative;
+    z-index: 1;
+    max-width: 420px;
+}
+
+.auth-brand-panel .brand-logo-badge {
+    width: 64px;
+    height: 64px;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, .25));
+}
+
+.auth-feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: .75rem;
+    margin-bottom: 1rem;
+}
+
+.auth-feature-item i {
+    font-size: 1.15rem;
+    background: rgba(255, 255, 255, .15);
+    border-radius: 50%;
+    width: 2.25rem;
+    height: 2.25rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+/* Panel derecho: formulario */
+.auth-form-panel {
+    background: #ffffff;
+}
+
+.auth-form-card {
+    width: 100%;
+    max-width: 380px;
+    animation: authFadeIn .5s ease-out;
+}
+
+@keyframes authFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Botón para mostrar/ocultar contraseña */
+.password-toggle-btn {
+    cursor: pointer;
+}

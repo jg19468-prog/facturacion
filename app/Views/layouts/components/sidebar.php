@@ -1,6 +1,7 @@
 <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
     <div class="sidebar-brand">
         <a href="<?= base_url() ?>" class="brand-link">
+            <img src="<?= base_url('assets/img/logo.svg') ?>" alt="Logotipo" class="brand-image">
             <span class="brand-text fw-light">Facturación App</span>
         </a>
     </div>

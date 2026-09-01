@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="logoGrad" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0d6efd"/>
+      <stop offset="1" stop-color="#6610f2"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Fondo -->
+  <rect width="64" height="64" rx="16" fill="url(#logoGrad)"/>
+
+  <!-- Hoja / factura -->
+  <rect x="13" y="9" width="28" height="32" rx="2" fill="#ffffff"/>
+  <polygon points="13,41 17,47 21,41 25,47 29,41 33,47 37,41 41,41" fill="#ffffff"/>
+
+  <!-- Líneas de texto (detalle de factura) -->
+  <rect x="18" y="16" width="18" height="2.5" rx="1.25" fill="#0d6efd"/>
+  <rect x="18" y="22" width="18" height="2.5" rx="1.25" fill="#0d6efd"/>
+  <rect x="18" y="28" width="12" height="2.5" rx="1.25" fill="#0d6efd"/>
+
+  <!-- Insignia de verificado/pagado -->
+  <circle cx="46" cy="47" r="11" fill="#22c55e" stroke="#ffffff" stroke-width="2.5"/>
+  <path d="M41 47 L45 51 L52 43" stroke="#ffffff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
