@@ -44,6 +44,26 @@
                     </ul>
                 </li>
 
+                <!-- Opción con Desplegable: Inventario -->
+                <li class="nav-item <?= url_is('categorias*') ? 'menu-open' : '' ?>">
+                    <a href="#" class="nav-link <?= url_is('categorias*') ? 'active' : '' ?>">
+                        <i class="nav-icon bi bi-box-seam"></i>
+                        <p>
+                            Inventario
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="<?= base_url('categorias') ?>" class="nav-link <?= url_is('categorias') ? 'active' : '' ?>">
+                                <i class="nav-icon bi bi-tags"></i>
+                                <p>Categorías</p>
+                            </a>
+                        </li>
+                        <!-- Aquí podrás añadir Marcas y Productos después -->
+                    </ul>
+                </li>
+
             </ul>
         </nav>
     </div>

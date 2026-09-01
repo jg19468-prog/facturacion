@@ -13,5 +13,9 @@ $routes->get('logout', 'AuthController::logout');
 $routes->group('', ['filter' => 'auth'], function($routes) {
     $routes->get('/', 'Home::index');
     $routes->get('facturacion', 'Home::index');
-    // Registra aquí los demás módulos protegidos...
+    
+    // -- ADMINISTRACIÓN DE CATEGORÍAS --
+    $routes->get('categorias', 'CategoriaController::index');
+    $routes->post('categorias/save', 'CategoriaController::save');
+    $routes->get('categorias/delete/(:num)', 'CategoriaController::delete/$1');
 });
