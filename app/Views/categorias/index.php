@@ -13,42 +13,21 @@ Administración de Categorías
 <!-- Contenido Principal -->
 <?= $this->section('content') ?>
 
-<!-- Alertas de éxito o error -->
-<?php if (session()->getFlashdata('success')): ?>
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <?= session()->getFlashdata('success') ?>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-<?php endif; ?>
-
-<?php if (session()->getFlashdata('errors')): ?>
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <ul class="mb-0">
-            <?php foreach (session()->getFlashdata('errors') as $error): ?>
-                <li><?= $error ?></li>
-            <?php endforeach; ?>
-        </ul>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-<?php endif; ?>
-
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
         <h3 class="card-title mb-0">
             <i class="bi bi-list-ul me-2"></i>Listado de Categorías
         </h3>
-        <div class="ms-auto d-flex gap-2">
-            <!-- Buscador -->
-            <input type="text" id="searchInput" class="form-control form-control-sm" placeholder="Buscar categoría..." onkeyup="filterTable()">
+        <div class="ms-auto">
             <!-- Botón Añadir -->
             <button class="btn btn-primary btn-sm" onclick="openModal()">
                 <i class="bi bi-plus-circle me-1"></i> Nueva Categoría
             </button>
         </div>
     </div>
-    <div class="card-body p-0">
+    <div class="card-body p-3">
         <div class="table-responsive">
-            <table class="table table-striped table-hover mb-0" id="categoriasTable">
+            <table class="table table-striped table-hover mb-0" id="categoriasTable" style="width: 100%;">
                 <thead class="table-light">
                     <tr>
                         <th width="10%">ID</th>
@@ -56,6 +35,7 @@ Administración de Categorías
                         <th width="15%" class="text-center">Acciones</th>
                     </tr>
                 </thead>
+                <!-- AQUÍ ESTÁ EL CAMBIO: Ya no está el else con el colspan -->
                 <tbody>
                     <?php if(!empty($categorias)): ?>
                         <?php foreach($categorias as $cat): ?>
@@ -66,16 +46,12 @@ Administración de Categorías
                                     <button class="btn btn-sm btn-outline-warning" onclick="openModal(<?= $cat['id_categoria'] ?>, '<?= esc($cat['nombre']) ?>')" title="Editar">
                                         <i class="bi bi-pencil-square"></i>
                                     </button>
-                                    <a href="<?= base_url('categorias/delete/'.$cat['id_categoria']) ?>" class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Está seguro de eliminar esta categoría?');" title="Eliminar">
+                                    <button class="btn btn-sm btn-outline-danger" onclick="confirmDelete('<?= base_url('categorias/delete/'.$cat['id_categoria']) ?>')" title="Eliminar">
                                         <i class="bi bi-trash"></i>
-                                    </a>
+                                    </button>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
-                    <?php else: ?>
-                        <tr>
-                            <td colspan="3" class="text-center">No hay categorías registradas.</td>
-                        </tr>
                     <?php endif; ?>
                 </tbody>
             </table>
@@ -114,33 +90,64 @@ Administración de Categorías
     </div>
 </div>
 
-<script>
-// Función para filtrar la tabla
-function filterTable() {
-    let input = document.getElementById("searchInput");
-    let filter = input.value.toLowerCase();
-    let table = document.getElementById("categoriasTable");
-    let tr = table.getElementsByTagName("tr");
+<?= $this->endSection() ?>
 
-    for (let i = 1; i < tr.length; i++) {
-        let td = tr[i].getElementsByTagName("td")[1]; // Filtra por la columna "Nombre"
-        if (td) {
-            let txtValue = td.textContent || td.innerText;
-            if (txtValue.toLowerCase().indexOf(filter) > -1) {
-                tr[i].style.display = "";
-            } else {
-                tr[i].style.display = "none";
-            }
+<!-- Sección de Scripts -->
+<?= $this->section('scripts') ?>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    
+    // 1. Inicialización de DataTables
+    $('#categoriasTable').DataTable({
+        language: {
+            url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+        },
+        responsive: true,
+        order: [[0, 'desc']] // Ordenar por ID descendente por defecto
+    });
+
+    // 2. Configuración global para Toasts de SweetAlert2
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
         }
-    }
-}
+    });
+
+    // 3. Manejo de Flashdata (Éxito)
+    <?php if (session()->getFlashdata('success')): ?>
+        Toast.fire({
+            icon: 'success',
+            title: '<?= esc(session()->getFlashdata('success')) ?>'
+        });
+    <?php endif; ?>
+
+    // 4. Manejo de Flashdata (Errores)
+    <?php if (session()->getFlashdata('errors')): ?>
+        let errorMessages = "<ul style='text-align: left;'>";
+        <?php foreach (session()->getFlashdata('errors') as $error): ?>
+            errorMessages += "<li><?= esc($error) ?></li>";
+        <?php endforeach; ?>
+        errorMessages += "</ul>";
+
+        Swal.fire({
+            icon: 'error',
+            title: 'No se pudo guardar',
+            html: errorMessages,
+            confirmButtonColor: '#0d6efd'
+        });
+    <?php endif; ?>
+});
 
 // Función para abrir el modal en modo Crear o Editar
 function openModal(id = '', nombre = '') {
-    // Referencia al modal (requiere Bootstrap 5 JS)
     var myModal = new bootstrap.Modal(document.getElementById('categoriaModal'));
     
-    // Cambiar título y valores
     document.getElementById('id_categoria').value = id;
     document.getElementById('nombre').value = nombre;
     
@@ -151,6 +158,24 @@ function openModal(id = '', nombre = '') {
     }
     
     myModal.show();
+}
+
+// Función para confirmar la eliminación de un registro
+function confirmDelete(url) {
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "¡Esta acción no se puede revertir y la categoría será eliminada!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = url;
+        }
+    });
 }
 </script>
 <?= $this->endSection() ?>
