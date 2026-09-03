@@ -35,7 +35,9 @@ class Filters extends BaseFilters
         'forcehttps'    => ForceHTTPS::class,
         'pagecache'     => PageCache::class,
         'performance'   => PerformanceMetrics::class,
+        'ajax'          => \App\Filters\AjaxFilter::class, // <-- Añadir esta línea
     ];
+
 
     /**
      * List of special required filters.
