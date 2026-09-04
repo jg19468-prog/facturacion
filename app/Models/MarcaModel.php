@@ -2,10 +2,10 @@
 namespace App\Models;
 use CodeIgniter\Model;
 
-class CategoriaModel extends Model
+class MarcaModel extends Model
 {
-    protected $table            = 'categoria';
-    protected $primaryKey       = 'id_categoria';
+    protected $table            = 'marca';
+    protected $primaryKey       = 'id_marca';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
@@ -13,14 +13,14 @@ class CategoriaModel extends Model
 
     // Validaciones
     protected $validationRules = [
-        'nombre' => 'required|max_length[50]|is_unique[categoria.nombre,id_categoria,{id_categoria}]'
+        'nombre' => 'required|max_length[50]|is_unique[marca.nombre,id_marca,{id_marca}]'
     ];
     
     protected $validationMessages = [
         'nombre' => [
-            'required'  => 'El nombre de la categoría es obligatorio.',
+            'required'  => 'El nombre de la marca es obligatorio.',
             'max_length'=> 'El nombre no puede exceder los 50 caracteres.',
-            'is_unique' => 'Ya existe una categoría con este nombre.'
+            'is_unique' => 'Ya existe una marca con este nombre.'
         ]
     ];
 }

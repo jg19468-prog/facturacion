@@ -18,6 +18,14 @@
                     </a>
                 </li>
 
+                <!-- NUEVA OPCIÓN: Clientes -->
+                <li class="nav-item">
+                    <a href="<?= base_url('clientes') ?>" class="nav-link <?= url_is('clientes*') ? 'active' : '' ?>">
+                        <i class="nav-icon bi bi-people"></i>
+                        <p>Clientes</p>
+                    </a>
+                </li>
+
                 <!-- Opción con Desplegable: Facturación -->
                 <!-- url_is('facturas*') detecta 'facturas', 'facturas/nueva', 'facturas/editar/1', etc. -->
                 <li class="nav-item <?= url_is('facturas*') ? 'menu-open' : '' ?>">
@@ -45,8 +53,9 @@
                 </li>
 
                 <!-- Opción con Desplegable: Inventario -->
-                <li class="nav-item <?= url_is('categorias*') ? 'menu-open' : '' ?>">
-                    <a href="#" class="nav-link <?= url_is('categorias*') ? 'active' : '' ?>">
+                <!-- Actualizado para detectar categorias o marcas -->
+                <li class="nav-item <?= (url_is('categorias*') || url_is('marcas*')) ? 'menu-open' : '' ?>">
+                    <a href="#" class="nav-link <?= (url_is('categorias*') || url_is('marcas*')) ? 'active' : '' ?>">
                         <i class="nav-icon bi bi-box-seam"></i>
                         <p>
                             Inventario
@@ -60,7 +69,13 @@
                                 <p>Categorías</p>
                             </a>
                         </li>
-                        <!-- Aquí podrás añadir Marcas y Productos después -->
+                        <!-- Nueva opción de Marcas -->
+                        <li class="nav-item">
+                            <a href="<?= base_url('marcas') ?>" class="nav-link <?= url_is('marcas') ? 'active' : '' ?>">
+                                <i class="nav-icon bi bi-award"></i>
+                                <p>Marcas</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
 
