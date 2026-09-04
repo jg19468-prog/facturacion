@@ -26,6 +26,14 @@
                     </a>
                 </li>
 
+                <!-- NUEVA OPCIÓN: Proveedores -->
+                <li class="nav-item">
+                    <a href="<?= base_url('proveedores') ?>" class="nav-link <?= url_is('proveedores*') ? 'active' : '' ?>">
+                        <i class="nav-icon bi bi-truck"></i>
+                        <p>Proveedores</p>
+                    </a>
+                </li>
+
                 <!-- Opción con Desplegable: Facturación -->
                 <!-- url_is('facturas*') detecta 'facturas', 'facturas/nueva', 'facturas/editar/1', etc. -->
                 <li class="nav-item <?= url_is('facturas*') ? 'menu-open' : '' ?>">

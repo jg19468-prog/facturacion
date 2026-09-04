@@ -22,6 +22,9 @@ $routes->group('', ['filter' => 'auth'], function($routes) {
     
     // Vista principal de clientes (HTML)
     $routes->get('clientes', 'ClienteController::index');
+
+    // Vista principal de proveedores (HTML) -> (CORREGIDO: Va en este grupo)
+    $routes->get('proveedores', 'ProveedorController::index');
 });
 
 // 3. Rutas de Procesamiento (Formularios y Eliminación)
@@ -34,8 +37,6 @@ $routes->group('categorias', ['filter' => 'auth'], function($routes) {
     $routes->post('save', 'CategoriaController::save');
     $routes->get('delete/(:num)', 'CategoriaController::delete/$1');
     
-    // (Opcional) Si en el futuro decides agregar las funciones extras 
-    // para hacer peticiones mediante JS, irían aquí.
 });
 
 // Procesamiento para Marcas
@@ -53,5 +54,14 @@ $routes->group('clientes', ['filter' => 'auth'], function($routes) {
     // Rutas para guardar (crear/editar) y eliminar clientes:
     $routes->post('save', 'ClienteController::save');
     $routes->get('delete/(:num)', 'ClienteController::delete/$1');
+    
+});
+
+// Procesamiento para Proveedores -> (CORREGIDO: Va totalmente afuera)
+$routes->group('proveedores', ['filter' => 'auth'], function($routes) {
+    
+    // Rutas para guardar (crear/editar) y eliminar proveedores:
+    $routes->post('save', 'ProveedorController::save');
+    $routes->get('delete/(:num)', 'ProveedorController::delete/$1');
     
 });
