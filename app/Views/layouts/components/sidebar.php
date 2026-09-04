@@ -18,7 +18,15 @@
                     </a>
                 </li>
 
-                <!-- NUEVA OPCIÓN: Clientes -->
+                <!-- Opción: Usuarios -->
+                <li class="nav-item">
+                    <a href="<?= base_url('usuarios') ?>" class="nav-link <?= url_is('usuarios*') ? 'active' : '' ?>">
+                        <i class="nav-icon bi bi-person-badge"></i>
+                        <p>Usuarios</p>
+                    </a>
+                </li>
+
+                <!-- Opción: Clientes -->
                 <li class="nav-item">
                     <a href="<?= base_url('clientes') ?>" class="nav-link <?= url_is('clientes*') ? 'active' : '' ?>">
                         <i class="nav-icon bi bi-people"></i>
@@ -26,7 +34,7 @@
                     </a>
                 </li>
 
-                <!-- NUEVA OPCIÓN: Proveedores -->
+                <!-- Opción: Proveedores -->
                 <li class="nav-item">
                     <a href="<?= base_url('proveedores') ?>" class="nav-link <?= url_is('proveedores*') ? 'active' : '' ?>">
                         <i class="nav-icon bi bi-truck"></i>
@@ -77,7 +85,6 @@
                                 <p>Categorías</p>
                             </a>
                         </li>
-                        <!-- Nueva opción de Marcas -->
                         <li class="nav-item">
                             <a href="<?= base_url('marcas') ?>" class="nav-link <?= url_is('marcas') ? 'active' : '' ?>">
                                 <i class="nav-icon bi bi-award"></i>
