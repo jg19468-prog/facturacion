@@ -9,6 +9,13 @@ class UsuarioController extends BaseController
 
     public function __construct()
     {
+        // Verificar si la sesión existe y si el rol es diferente a administrador
+        if (session()->get('rol') !== 'administrador') {
+            // Si es encargado, lo expulsamos de aquí y lo mandamos a facturas
+            header('Location: ' . base_url('facturas'));
+            exit(); 
+        }
+
         $this->usuarioModel = new UsuarioModel();
     }
 
@@ -26,11 +33,12 @@ class UsuarioController extends BaseController
         $clave = $this->request->getPost('clave');
         
         $data = [
-            'nombre' => $this->request->getPost('nombre'),
-            'correo' => $this->request->getPost('correo'),
-            'rol'    => $this->request->getPost('rol'),
+            'id_usuario' => $id, // <--- SOLUCIÓN: Agregamos el ID para la validación del correo
+            'nombre'     => $this->request->getPost('nombre'),
+            'correo'     => $this->request->getPost('correo'),
+            'rol'        => $this->request->getPost('rol'),
             // Si el checkbox está marcado llega 'on', de lo contrario null
-            'estado' => $this->request->getPost('estado') ? 1 : 0 
+            'estado'     => $this->request->getPost('estado') ? 1 : 0 
         ];
 
         // Solo actualizar la contraseña si el usuario escribió una nueva

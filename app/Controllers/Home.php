@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Models\FacturaModel;
+
 class Home extends BaseController
 {
     // OJO: Ya no lleva ": string" al lado de index()
@@ -12,8 +14,19 @@ class Home extends BaseController
             return redirect()->to(base_url('login'));
         }
 
-        // Si pasó la validación, mostramos el sistema de facturación
-        return view('facturacion/index');
+        $facturaModel = new FacturaModel();
+
+        $data = [
+            'facturasDelMes'   => $facturaModel->facturasDelMes(),
+            'ingresosDelMes'   => $facturaModel->ingresosDelMes(),
+            'pendientesCobro'  => $facturaModel->pendientesDeCobro(),
+            'facturasAnuladas' => $facturaModel->totalAnuladas(),
+            'ultimasFacturas'  => $facturaModel->ultimasFacturas(6),
+            'graficoIngresos'  => $facturaModel->ingresosUltimosMeses(6),
+        ];
+
+        // Mostramos el dashboard del sistema de facturación
+        return view('facturacion/index', $data);
     }
 
     public function saludo($nombre, $apellido)

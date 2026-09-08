@@ -9,6 +9,13 @@ class ClienteController extends BaseController
 
     public function __construct()
     {
+        // Verificar si la sesión existe y si el rol es diferente a administrador
+        if (session()->get('rol') !== 'administrador') {
+            // Si es encargado, lo expulsamos de aquí y lo mandamos a facturas
+            header('Location: ' . base_url('facturas'));
+            exit(); 
+        }
+
         $this->clienteModel = new ClienteModel();
     }
 
@@ -31,6 +38,7 @@ class ClienteController extends BaseController
         }
 
         $data = [
+            'id_cliente' => $id, // <-- Agregado para evitar errores de validación (is_unique) al actualizar
             'cedula'    => $cedula,
             'nombres'   => $this->request->getPost('nombres'),
             'apellidos' => $this->request->getPost('apellidos'),

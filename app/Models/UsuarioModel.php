@@ -12,9 +12,11 @@ class UsuarioModel extends Model
     protected $allowedFields    = ['nombre', 'correo', 'clave', 'rol', 'estado'];
 
     protected $validationRules = [
-        'nombre' => 'required|max_length[100]',
-        'correo' => 'required|valid_email|is_unique[usuario.correo,id_usuario,{id_usuario}]',
-        'rol'    => 'required|in_list[administrador,encargado]'
+        // ---> SOLUCIÓN: Agregamos la regla para el id_usuario <---
+        'id_usuario' => 'permit_empty|is_natural_no_zero', 
+        'nombre'     => 'required|max_length[100]',
+        'correo'     => 'required|valid_email|is_unique[usuario.correo,id_usuario,{id_usuario}]',
+        'rol'        => 'required|in_list[administrador,encargado]'
     ];
     
     protected $validationMessages = [

@@ -11,6 +11,13 @@ class CategoriaController extends BaseController
 
     public function __construct()
     {
+        // Verificar si la sesión existe y si el rol es diferente a administrador
+        if (session()->get('rol') !== 'administrador') {
+            // Si es encargado, lo expulsamos de aquí y lo mandamos a facturas
+            header('Location: ' . base_url('facturas'));
+            exit(); 
+        }
+
         $this->categoriaModel = new CategoriaModel();
     }
 

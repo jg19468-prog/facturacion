@@ -13,13 +13,20 @@ $routes->get('logout', 'AuthController::logout');
 $routes->group('', ['filter' => 'auth'], function($routes) {
     $routes->get('/', 'Home::index');
     $routes->get('facturacion', 'Home::index');
-    
+    $routes->get('dashboard', 'Home::index');
+
     // Vistas principales (HTML)
     $routes->get('categorias', 'CategoriaController::index');
     $routes->get('marcas', 'MarcaController::index');
     $routes->get('clientes', 'ClienteController::index');
     $routes->get('proveedores', 'ProveedorController::index');
     $routes->get('usuarios', 'UsuarioController::index');
+
+    // Módulo de Facturación
+    $routes->get('facturas', 'FacturaController::index');
+    $routes->get('facturas/nueva', 'FacturaController::nueva');
+    $routes->get('facturas/ver/(:num)', 'FacturaController::ver/$1');
+    $routes->get('facturas/imprimir/(:num)', 'FacturaController::imprimir/$1'); // <--- RUTA PARA EL PDF AGREGADA AQUÍ
 });
 
 // 3. Rutas de Procesamiento (Formularios y Eliminación)
@@ -52,4 +59,12 @@ $routes->group('proveedores', ['filter' => 'auth'], function($routes) {
 $routes->group('usuarios', ['filter' => 'auth'], function($routes) {
     $routes->post('save', 'UsuarioController::save');
     $routes->get('delete/(:num)', 'UsuarioController::delete/$1');
+});
+
+// Procesamiento para Facturas
+$routes->group('facturas', ['filter' => 'auth'], function($routes) {
+    $routes->post('save', 'FacturaController::save');
+    $routes->get('pagar/(:num)', 'FacturaController::pagar/$1');
+    $routes->get('anular/(:num)', 'FacturaController::anular/$1');
+    $routes->get('delete/(:num)', 'FacturaController::delete/$1');
 });
