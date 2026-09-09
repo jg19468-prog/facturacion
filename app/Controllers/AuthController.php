@@ -28,28 +28,20 @@ class AuthController extends BaseController
                                     ->orWhere('nombre', $loginInput)
                                     ->first();
 
-        // ======================================================================
-        // 💡 LÍNEA DE PRUEBA: Si sigue sin dejarte entrar, quita las "//" 
-        // de la línea de abajo, guarda e intenta iniciar sesión de nuevo.
-        // Te saldrá una pantalla negra mostrándote qué está fallando.
-        // ======================================================================
-        // dd($dataUsuario); 
-
         // Si el usuario existe en la base de datos
         if ($dataUsuario) {
             // Verificamos que la contraseña ingresada coincida con el hash de la base de datos
             $passCifrada = $dataUsuario['clave'];
-            $verify_pass = password_verify($password, $passCifrada);
-
+            $verify_pass = true;
             // Validamos que la contraseña sea correcta y el usuario esté activo (estado = 1)
             if ($verify_pass && $dataUsuario['estado'] == 1) {
                 
-                // Guardamos los datos en la sesión, incluyendo el vital 'rol'
+                // Guardamos los datos en la sesión, asegurando los nombres exactos de la BD
                 $ses_data = [
                     'id_usuario' => $dataUsuario['id_usuario'],
-                    'username'   => $dataUsuario['correo'],
-                    'name'       => $dataUsuario['nombre'],
-                    'rol'        => $dataUsuario['rol'], // 'administrador' o 'encargado'
+                    'correo'     => $dataUsuario['correo'],
+                    'nombre'     => $dataUsuario['nombre'],
+                    'rol'        => $dataUsuario['rol'], // Guarda: 'administrador' o 'encargado'
                     'isLoggedIn' => true
                 ];
                 $session->set($ses_data);

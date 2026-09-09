@@ -1,176 +1,248 @@
 <?= $this->extend('layouts/main') ?>
 
-<!-- Título de la pestaña -->
 <?= $this->section('title') ?>
 Dashboard
 <?= $this->endSection() ?>
 
-<!-- Título principal dentro del contenido -->
-<?= $this->section('page_title') ?>
-<i class="bi bi-speedometer2 text-primary me-2"></i>Panel Principal
-<?= $this->endSection() ?>
-
-<!-- Contenido Principal -->
 <?= $this->section('content') ?>
+<!-- Estilos personalizados para igualar el diseño minimalista -->
+<style>
+    .kpi-card { border: none; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
+    .icon-box { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; border-radius: 10px; font-size: 1.25rem; }
+    .icon-box-blue { background-color: #e0f2fe; color: #0284c7; }
+    .icon-box-green { background-color: #dcfce7; color: #16a34a; }
+    .icon-box-orange { background-color: #ffedd5; color: #ea580c; }
+    .icon-box-red { background-color: #fee2e2; color: #dc2626; }
+    .text-xs { font-size: 0.75rem; }
+    .chart-card { border: none; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
+    .table-sub-header { font-size: 0.7rem; font-weight: bold; color: #9ca3af; text-transform: uppercase; }
+</style>
 
-<div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
+<div class="d-flex justify-content-between align-items-center flex-wrap mb-4 mt-2">
     <div>
-        <h4 class="mb-0">Hola, <?= esc(session()->get('name') ?? 'Usuario') ?> 👋</h4>
-        <p class="text-muted mb-0">Este es el resumen de tu actividad de facturación.</p>
+        <h3 class="mb-1 fw-bold" style="color: #1e293b;">Decisiones con datos claros</h3>
+        <p class="text-muted mb-0 text-sm">Revisa el pulso del negocio y detecta lo que necesita atención hoy.</p>
     </div>
-    <a href="<?= base_url('facturas/nueva') ?>" class="btn btn-primary mt-2 mt-sm-0">
-        <i class="bi bi-plus-circle me-1"></i> Nueva Factura
-    </a>
-</div>
-
-<!-- Tarjetas de estadísticas -->
-<div class="row">
-    <div class="col-lg-3 col-6">
-        <div class="small-box text-bg-primary">
-            <div class="inner">
-                <h3><?= (int) $facturasDelMes ?></h3>
-                <p>Facturas este mes</p>
-            </div>
-            <i class="bi bi-receipt-cutoff small-box-icon"></i>
-            <a href="<?= base_url('facturas') ?>" class="small-box-footer">
-                Ver historial <i class="bi bi-arrow-right-circle ms-1"></i>
-            </a>
-        </div>
-    </div>
-
-    <div class="col-lg-3 col-6">
-        <div class="small-box text-bg-success">
-            <div class="inner">
-                <h3>$<?= number_format((float) $ingresosDelMes, 2) ?></h3>
-                <p>Ingresos del mes</p>
-            </div>
-            <i class="bi bi-cash-coin small-box-icon"></i>
-            <a href="<?= base_url('facturas') ?>" class="small-box-footer">
-                Ver detalle <i class="bi bi-arrow-right-circle ms-1"></i>
-            </a>
-        </div>
-    </div>
-
-    <div class="col-lg-3 col-6">
-        <div class="small-box text-bg-warning">
-            <div class="inner">
-                <h3><?= (int) $pendientesCobro ?></h3>
-                <p>Pendientes de cobro</p>
-            </div>
-            <i class="bi bi-hourglass-split small-box-icon"></i>
-            <a href="<?= base_url('facturas') ?>" class="small-box-footer">
-                Revisar <i class="bi bi-arrow-right-circle ms-1"></i>
-            </a>
-        </div>
-    </div>
-
-    <div class="col-lg-3 col-6">
-        <div class="small-box text-bg-danger">
-            <div class="inner">
-                <h3><?= (int) $facturasAnuladas ?></h3>
-                <p>Facturas anuladas</p>
-            </div>
-            <i class="bi bi-x-circle small-box-icon"></i>
-            <a href="<?= base_url('facturas') ?>" class="small-box-footer">
-                Ver historial <i class="bi bi-arrow-right-circle ms-1"></i>
-            </a>
-        </div>
+    <div class="d-flex align-items-center">
+        <span class="badge bg-light text-secondary border p-2 text-sm me-3">
+            <i class="bi bi-calendar3 me-1"></i> <?= date('d/m/Y') ?>
+        </span>
     </div>
 </div>
 
-<div class="row">
-    <!-- Gráfico de ingresos -->
-    <div class="col-lg-8">
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">
-                    <i class="bi bi-graph-up-arrow me-2"></i>Ingresos de los últimos 6 meses
-                </h3>
+<!-- Tarjetas de estadísticas (Estilo Minimalista) -->
+<div class="row mb-3">
+    <!-- Ventas de hoy -->
+    <div class="col-lg-3 col-md-6 col-12 mb-3">
+        <div class="card kpi-card h-100">
+            <div class="card-body d-flex align-items-center p-3">
+                <div class="icon-box icon-box-blue me-3">
+                    <i class="bi bi-receipt-cutoff"></i>
+                </div>
+                <div>
+                    <h6 class="text-muted mb-1 text-xs fw-bold">Ventas de hoy</h6>
+                    <h4 class="mb-0 fw-bold" style="color: #1e293b;"><?= esc($ventasHoy ?? 0) ?></h4>
+                    <small class="text-muted text-xs">transacciones registradas</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ingresos del mes -->
+    <div class="col-lg-3 col-md-6 col-12 mb-3">
+        <div class="card kpi-card h-100">
+            <div class="card-body d-flex align-items-center p-3">
+                <div class="icon-box icon-box-green me-3">
+                    <i class="bi bi-cash-coin"></i>
+                </div>
+                <div>
+                    <h6 class="text-muted mb-1 text-xs fw-bold">Ingresos del mes</h6>
+                    <h4 class="mb-0 fw-bold" style="color: #1e293b;">$<?= number_format((float) ($ingresosMes ?? 0), 2) ?></h4>
+                    <small class="text-muted text-xs">acumulado mensual</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Clientes registrados -->
+    <div class="col-lg-3 col-md-6 col-12 mb-3">
+        <div class="card kpi-card h-100">
+            <div class="card-body d-flex align-items-center p-3">
+                <div class="icon-box icon-box-orange me-3">
+                    <i class="bi bi-people"></i>
+                </div>
+                <div>
+                    <h6 class="text-muted mb-1 text-xs fw-bold">Clientes registrados</h6>
+                    <h4 class="mb-0 fw-bold" style="color: #1e293b;"><?= esc($clientesRegistrados ?? 0) ?></h4>
+                    <small class="text-muted text-xs">base de clientes</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stock por revisar -->
+    <div class="col-lg-3 col-md-6 col-12 mb-3">
+        <div class="card kpi-card h-100">
+            <div class="card-body d-flex align-items-center p-3">
+                <div class="icon-box icon-box-red me-3">
+                    <i class="bi bi-exclamation-triangle"></i>
+                </div>
+                <div>
+                    <h6 class="text-muted mb-1 text-xs fw-bold">Stock por revisar</h6>
+                    <h4 class="mb-0 fw-bold" style="color: #1e293b;"><?= esc($stockRevisar ?? 0) ?></h4>
+                    <small class="text-muted text-xs">productos con 5 o menos unidades</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Sección de Gráficos -->
+<div class="row mb-3">
+    <!-- Gráfico de Tendencia (Línea curva) -->
+    <div class="col-lg-8 mb-3">
+        <div class="card chart-card h-100">
+            <div class="card-header bg-white border-0 pt-4 pb-0">
+                <h6 class="fw-bold mb-0" style="color: #1e293b;">Actividad de los últimos meses</h6>
+                <small class="text-muted text-xs">Ventas e ingresos históricos</small>
             </div>
             <div class="card-body">
-                <canvas id="graficoIngresos" style="min-height: 260px;"></canvas>
+                <canvas id="tendenciaChart" style="min-height: 250px; max-height: 250px;"></canvas>
             </div>
         </div>
     </div>
 
-    <!-- Últimas facturas -->
-    <div class="col-lg-4">
-        <div class="card h-100">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h3 class="card-title mb-0">
-                    <i class="bi bi-clock-history me-2"></i>Últimas Facturas
-                </h3>
-                <a href="<?= base_url('facturas') ?>" class="small">Ver todas</a>
+    <!-- Gráfico de Ingresos (Barras) -->
+    <div class="col-lg-4 mb-3">
+        <div class="card chart-card h-100">
+            <div class="card-header bg-white border-0 pt-4 pb-0">
+                <h6 class="fw-bold mb-0" style="color: #1e293b;">Ingresos mensuales</h6>
+                <small class="text-muted text-xs">Últimos meses con actividad</small>
             </div>
-            <div class="card-body p-0">
-                <?php if (!empty($ultimasFacturas)): ?>
-                    <div class="list-group list-group-flush">
-                        <?php foreach ($ultimasFacturas as $f): ?>
-                            <?php
-                                $badge = match ($f['estado']) {
-                                    'pagada'   => 'success',
-                                    'anulada'  => 'danger',
-                                    default    => 'warning',
-                                };
-                            ?>
-                            <div class="list-group-item d-flex justify-content-between align-items-center">
-                                <div>
-                                    <div class="fw-semibold"><?= esc($f['numero_factura'] ?? ('#' . $f['id_factura'])) ?></div>
-                                    <small class="text-muted"><?= esc(trim(($f['nombres'] ?? '') . ' ' . ($f['apellidos'] ?? '')) ?: 'Cliente eliminado') ?></small>
-                                </div>
-                                <div class="text-end">
-                                    <span class="badge bg-<?= $badge ?> mb-1"><?= ucfirst($f['estado']) ?></span>
-                                    <div class="small text-muted">$<?= number_format((float) $f['total'], 2) ?></div>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
-                <?php else: ?>
-                    <div class="text-center text-muted py-5 px-3">
-                        <i class="bi bi-inbox" style="font-size: 2rem;"></i>
-                        <p class="mt-2 mb-1">Aún no se han registrado facturas.</p>
-                        <a href="<?= base_url('facturas/nueva') ?>" class="btn btn-sm btn-primary mt-2">
-                            <i class="bi bi-plus-circle me-1"></i> Crear la primera factura
-                        </a>
-                    </div>
-                <?php endif; ?>
+            <div class="card-body">
+                <canvas id="ingresosChart" style="min-height: 250px; max-height: 250px;"></canvas>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Sección Inferior: Productos y Alertas (Maquetación inicial) -->
+<div class="row">
+    <div class="col-lg-7 mb-3">
+        <div class="card chart-card h-100">
+            <div class="card-header bg-white border-0 pt-4 pb-3">
+                <h6 class="fw-bold mb-0" style="color: #1e293b;">Productos más vendidos</h6>
+                <small class="text-muted text-xs">Unidades colocadas históricamente</small>
+            </div>
+            <div class="card-body p-0 table-responsive">
+                <table class="table table-borderless table-hover align-middle mb-0">
+                    <thead class="border-bottom">
+                        <tr>
+                            <th class="table-sub-header ps-4">Producto</th>
+                            <th class="table-sub-header text-center">Unidades</th>
+                            <th class="table-sub-header text-end pe-4">Ingresos</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Ejemplo estático para que veas el diseño -->
+                        <tr>
+                            <td class="ps-4 fw-bold text-sm" style="color: #1e293b;">LAPTOP HP 230</td>
+                            <td class="text-center"><span class="badge bg-info bg-opacity-10 text-info px-2 py-1">2</span></td>
+                            <td class="text-end pe-4 fw-bold text-sm">$ 2,400.00</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-5 mb-3">
+        <div class="card chart-card h-100">
+            <div class="card-header bg-white border-0 pt-4 pb-3">
+                <h6 class="fw-bold mb-0" style="color: #1e293b;">Alertas de inventario</h6>
+                <small class="text-muted text-xs">Productos que requieren atención</small>
+            </div>
+            <div class="card-body p-0">
+                <div class="list-group list-group-flush">
+                    <!-- Ejemplo estático para que veas el diseño -->
+                    <div class="list-group-item border-bottom-0 d-flex justify-content-between align-items-center py-3 px-4">
+                        <div>
+                            <h6 class="mb-0 fw-bold text-sm" style="color: #1e293b;">LAPTOP HP 230</h6>
+                            <small class="text-muted text-xs">Precio: $1,200.00</small>
+                        </div>
+                        <span class="badge bg-warning bg-opacity-10 text-warning px-2 py-1">3 unid.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?= $this->endSection() ?>
 
 <?= $this->section('scripts') ?>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-    const ctx = document.getElementById('graficoIngresos');
-    const labels = <?= json_encode(array_column($graficoIngresos, 'mes')) ?>;
-    const datos  = <?= json_encode(array_column($graficoIngresos, 'total')) ?>;
+    const dataGrafico = <?= json_encode($graficoIngresos ?? []) ?>;
+    const labels = dataGrafico.map(item => item.mes);
+    const datosIngresos = dataGrafico.map(item => item.total);
+    // Como aún no tenemos los datos de cantidad de ventas por mes, duplicamos ingresos para el ejemplo visual
+    const datosVentas = dataGrafico.map(item => item.total / 100); 
 
-    new Chart(ctx, {
+    // 1. Gráfico de Línea Curva (Actividad)
+    const ctxTendencia = document.getElementById('tendenciaChart');
+    new Chart(ctxTendencia, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Ingresos ($)',
+                    data: datosIngresos,
+                    borderColor: '#f97316', // Naranja
+                    backgroundColor: 'rgba(249, 115, 22, 0.1)',
+                    borderWidth: 2,
+                    tension: 0.4, // Esto hace la línea curva
+                    fill: true
+                },
+                {
+                    label: 'Ventas',
+                    data: datosVentas,
+                    borderColor: '#0284c7', // Azul
+                    backgroundColor: 'transparent',
+                    borderWidth: 2,
+                    tension: 0.4
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { position: 'top', labels: { usePointStyle: true, boxWidth: 8 } } },
+            scales: { y: { beginAtZero: true, border: { dash: [4, 4] }, grid: { color: '#f3f4f6' } }, x: { grid: { display: false } } }
+        }
+    });
+
+    // 2. Gráfico de Barras (Ingresos)
+    const ctxIngresos = document.getElementById('ingresosChart');
+    new Chart(ctxIngresos, {
         type: 'bar',
         data: {
             labels: labels,
             datasets: [{
                 label: 'Ingresos ($)',
-                data: datos,
-                backgroundColor: 'rgba(13, 110, 253, 0.55)',
-                borderColor: 'rgba(13, 110, 253, 1)',
-                borderWidth: 1,
-                borderRadius: 6,
-                maxBarThickness: 45
+                data: datosIngresos,
+                backgroundColor: '#bbf7d0', // Verde menta pastel
+                borderRadius: 4,
+                maxBarThickness: 40
             }]
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             plugins: { legend: { display: false } },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: { callback: (value) => '$' + value }
-                }
-            }
+            scales: { y: { beginAtZero: true, border: { dash: [4, 4] }, grid: { color: '#f3f4f6' } }, x: { grid: { display: false } } }
         }
     });
 });

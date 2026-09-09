@@ -12,9 +12,10 @@ class ClienteModel extends Model
     protected $allowedFields    = ['cedula', 'nombres', 'apellidos', 'telefono', 'direccion'];
 
     protected $validationRules = [
-        'cedula'    => 'required|exact_length[10]|is_unique[cliente.cedula,id_cliente,{id_cliente}]',
-        'nombres'   => 'required|max_length[100]',
-        'apellidos' => 'required|max_length[100]'
+        'id_cliente' => 'permit_empty', // <-- Esta es la línea agregada que soluciona el error
+        'cedula'     => 'required|exact_length[10]|is_unique[cliente.cedula,id_cliente,{id_cliente}]',
+        'nombres'    => 'required|max_length[100]',
+        'apellidos'  => 'required|max_length[100]'
     ];
     
     protected $validationMessages = [
