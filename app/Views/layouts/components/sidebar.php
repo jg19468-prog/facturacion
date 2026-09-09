@@ -49,24 +49,44 @@
                         </a>
                     </li>
 
-                    <!-- Inventario (Categorías y Marcas) -->
-                    <li class="nav-item <?= (url_is('categorias*') || url_is('marcas*')) ? 'menu-open' : '' ?>">
-                        <a href="#" class="nav-link <?= (url_is('categorias*') || url_is('marcas*')) ? 'active' : '' ?>">
-                            <i class="nav-icon bi bi-box-seam"></i>
+                    <!-- Compras e Inventario -->
+                    <?php 
+                        // Verificamos si alguna de las rutas internas está activa para mantener el menú abierto
+                        $isComprasOpen = url_is('compras*') || url_is('inventario*') || url_is('categorias*') || url_is('marcas*'); 
+                    ?>
+                    <li class="nav-item <?= $isComprasOpen ? 'menu-open' : '' ?>">
+                        <a href="#" class="nav-link <?= $isComprasOpen ? 'active' : '' ?>">
+                            <i class="nav-icon bi bi-bag-check"></i>
                             <p>
-                                Inventario
+                                Compras
                                 <i class="nav-arrow bi bi-chevron-right"></i>
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
+                            <!-- Registrar Compra -->
                             <li class="nav-item">
-                                <a href="<?= base_url('categorias') ?>" class="nav-link <?= url_is('categorias') ? 'active' : '' ?>">
+                                <a href="<?= base_url('compras/nueva') ?>" class="nav-link <?= url_is('compras/nueva') ? 'active' : '' ?>">
+                                    <i class="nav-icon bi bi-cart-plus"></i>
+                                    <p>Registrar Compra</p>
+                                </a>
+                            </li>
+                            <!-- Inventario -->
+                            <li class="nav-item">
+                                <a href="<?= base_url('inventario') ?>" class="nav-link <?= url_is('inventario*') ? 'active' : '' ?>">
+                                    <i class="nav-icon bi bi-box"></i>
+                                    <p>Inventario</p>
+                                </a>
+                            </li>
+                            <!-- Categorías -->
+                            <li class="nav-item">
+                                <a href="<?= base_url('categorias') ?>" class="nav-link <?= url_is('categorias*') ? 'active' : '' ?>">
                                     <i class="nav-icon bi bi-tags"></i>
                                     <p>Categorías</p>
                                 </a>
                             </li>
+                            <!-- Marcas -->
                             <li class="nav-item">
-                                <a href="<?= base_url('marcas') ?>" class="nav-link <?= url_is('marcas') ? 'active' : '' ?>">
+                                <a href="<?= base_url('marcas') ?>" class="nav-link <?= url_is('marcas*') ? 'active' : '' ?>">
                                     <i class="nav-icon bi bi-award"></i>
                                     <p>Marcas</p>
                                 </a>
